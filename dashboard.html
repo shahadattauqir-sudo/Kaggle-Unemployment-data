@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unemployment Analysis in India - Executive Dashboard</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    .tab-btn.active {
+      border-bottom: 2px solid #2563eb;
+      color: #2563eb;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased min-h-screen">
+  <!-- Top Navigation Bar -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">Task 2</span>
+          <span class="text-xs font-medium text-slate-500">Kaggle Unemployment Dataset</span>
+        </div>
+        <h1 class="text-2xl font-bold text-slate-900 mt-1">Unemployment Analysis & COVID-19 Impact Study</h1>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="#recommendations" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-blue-600 hover:bg-blue-700 transition">
+          Policy Recommendations
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <!-- Executive KPI Grid -->
+    <section>
+      <h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 mb-4">Macroeconomic Health & Shock Metrics</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <!-- KPI 1 -->
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow transition">
+          <p class="text-xs font-medium text-slate-500">Pre-Lockdown Baseline</p>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span class="text-3xl font-extrabold text-slate-800">9.51%</span>
+            <span class="text-xs text-slate-500">May 19 - Feb 20</span>
+          </div>
+          <p class="text-xs text-slate-500 mt-2">Historic pre-pandemic benchmark across 28 states.</p>
+        </div>
+
+        <!-- KPI 2 -->
+        <div class="bg-white p-5 rounded-xl border border-red-200 bg-red-50/20 shadow-sm hover:shadow transition">
+          <p class="text-xs font-medium text-red-600">Lockdown Shock Rate</p>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span class="text-3xl font-extrabold text-red-600">19.68%</span>
+            <span class="text-xs font-bold text-red-500">▲ +10.17%</span>
+          </div>
+          <p class="text-xs text-slate-500 mt-2">Peak nationwide surge reached 23.5% in April 2020.</p>
+        </div>
+
+        <!-- KPI 3 -->
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow transition">
+          <p class="text-xs font-medium text-amber-600">Peak Jobs Displaced</p>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span class="text-3xl font-extrabold text-amber-600">133.5M</span>
+            <span class="text-xs font-bold text-amber-600">-33.1%</span>
+          </div>
+          <p class="text-xs text-slate-500 mt-2">Active workforce drop: 403M (Feb) down to 269M (Apr).</p>
+        </div>
+
+        <!-- KPI 4 -->
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow transition">
+          <p class="text-xs font-medium text-emerald-600">Post-Lockdown Recovery</p>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span class="text-3xl font-extrabold text-emerald-600">11.90%</span>
+            <span class="text-xs font-bold text-emerald-600">▼ Rebound</span>
+          </div>
+          <p class="text-xs text-slate-500 mt-2">Rapid V-shaped recovery following Unlock 1.0.</p>
+        </div>
+
+        <!-- KPI 5 -->
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow transition">
+          <p class="text-xs font-medium text-blue-600">Sectoral Vulnerability Gap</p>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span class="text-3xl font-extrabold text-blue-600">+2.85%</span>
+            <span class="text-xs text-slate-500">Urban vs Rural</span>
+          </div>
+          <p class="text-xs text-slate-500 mt-2">Urban avg: 13.17% vs Rural avg: 10.32%.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Navigation Tabs -->
+    <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-6">
+      <div class="border-b border-slate-200 flex flex-wrap gap-4" id="tabContainer">
+        <button onclick="switchTab('tab1')" id="btn-tab1" class="tab-btn active pb-3 px-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition">
+          1. National Timeline & Pandemic Shock
+        </button>
+        <button onclick="switchTab('tab2')" id="btn-tab2" class="tab-btn pb-3 px-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition">
+          2. Rural vs. Urban Asymmetry
+        </button>
+        <button onclick="switchTab('tab3')" id="btn-tab3" class="tab-btn pb-3 px-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition">
+          3. Top Impacted States Ranking
+        </button>
+        <button onclick="switchTab('tab4')" id="btn-tab4" class="tab-btn pb-3 px-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition">
+          4. State Heatmap & Regional Zones
+        </button>
+        <button onclick="switchTab('tab5')" id="btn-tab5" class="tab-btn pb-3 px-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition">
+          5. Labour Force Participation Dynamics
+        </button>
+      </div>
+
+      <!-- Tab Content 1 -->
+      <div id="tab1" class="tab-content space-y-4">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+          <div class="lg:col-span-2">
+            <img src="visualizations/01_national_unemployment_trend.png" alt="National Unemployment Trend" class="w-full rounded-lg border border-slate-200 shadow-sm">
+          </div>
+          <div class="space-y-4 text-slate-700 text-sm">
+            <h3 class="text-base font-bold text-slate-900">Key Takeaways: National Trend</h3>
+            <ul class="list-disc pl-5 space-y-2">
+              <li><strong>Pre-Pandemic Equilibrium:</strong> From May 2019 to February 2020, national unemployment hovered stably between <strong>7.0% and 10.0%</strong>.</li>
+              <li><strong>Inflection Point:</strong> The imposition of the nationwide lockdown on March 24, 2020, triggered a steep spike to <strong>23.5% in April 2020</strong>.</li>
+              <li><strong>V-Shaped Rebound:</strong> As manufacturing and transit restrictions eased in June 2020, headline unemployment contracted back to 10.2% by June 2020.</li>
+            </ul>
+            <div class="p-3 bg-amber-50 border-l-4 border-amber-500 rounded text-xs text-amber-800">
+              <strong>Analytical Insight:</strong> The sharp V-shaped rebound represents rapid reactivation of daily wage and self-employed workers, rather than permanent structural recovery.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content 2 -->
+      <div id="tab2" class="tab-content hidden space-y-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <img src="visualizations/02_rural_vs_urban_trends.png" alt="Rural vs Urban Trends" class="w-full rounded-lg border border-slate-200 shadow-sm">
+            <p class="text-xs text-slate-500 mt-2 text-center">Monthly time series comparison between Rural and Urban areas.</p>
+          </div>
+          <div>
+            <img src="visualizations/03_rural_vs_urban_distribution.png" alt="Rural vs Urban Distribution" class="w-full rounded-lg border border-slate-200 shadow-sm">
+            <p class="text-xs text-slate-500 mt-2 text-center">Variance and boxplot distribution by sector and pandemic phase.</p>
+          </div>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 text-sm text-slate-700 space-y-2">
+          <h4 class="font-bold text-slate-900">Why Did Urban Areas Suffer More?</h4>
+          <p>
+            Urban unemployment averaged <strong>13.17%</strong> compared to <strong>10.32%</strong> in rural sectors. 
+            During lockdown restrictions, urban service sectors (hospitality, construction, retail, travel) ground to a complete halt, leaving non-agricultural informal workers without income. Conversely, agriculture served as a natural shock-absorber in rural India, cushioned further by the expansion of MGNREGA work allocation.
+          </p>
+        </div>
+      </div>
+
+      <!-- Tab Content 3 -->
+      <div id="tab3" class="tab-content hidden space-y-4">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+          <div class="lg:col-span-2">
+            <img src="visualizations/04_covid_impact_top_states.png" alt="Top Impacted States" class="w-full rounded-lg border border-slate-200 shadow-sm">
+          </div>
+          <div class="space-y-4 text-slate-700 text-sm">
+            <h3 class="text-base font-bold text-slate-900">Most Impacted States: Baseline vs Peak</h3>
+            <div class="overflow-x-auto">
+              <table class="min-w-full text-xs text-left">
+                <thead class="bg-slate-100 font-semibold text-slate-700">
+                  <tr>
+                    <th class="p-2">State</th>
+                    <th class="p-2">Baseline</th>
+                    <th class="p-2">Lockdown</th>
+                    <th class="p-2">Increase</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200">
+                  <tr><td class="p-2 font-medium">Puducherry</td><td class="p-2">1.59%</td><td class="p-2 text-red-600 font-bold">45.84%</td><td class="p-2 font-bold">+44.24%</td></tr>
+                  <tr><td class="p-2 font-medium">Jharkhand</td><td class="p-2">14.28%</td><td class="p-2 text-red-600 font-bold">41.65%</td><td class="p-2 font-bold">+27.37%</td></tr>
+                  <tr><td class="p-2 font-medium">Tamil Nadu</td><td class="p-2">2.84%</td><td class="p-2 text-red-600 font-bold">29.37%</td><td class="p-2 font-bold">+26.54%</td></tr>
+                  <tr><td class="p-2 font-medium">Bihar</td><td class="p-2">13.83%</td><td class="p-2 text-red-600 font-bold">36.69%</td><td class="p-2 font-bold">+22.85%</td></tr>
+                  <tr><td class="p-2 font-medium">Karnataka</td><td class="p-2">3.23%</td><td class="p-2 text-red-600 font-bold">17.53%</td><td class="p-2 font-bold">+14.30%</td></tr>
+                  <tr><td class="p-2 font-medium">Haryana</td><td class="p-2">22.94%</td><td class="p-2 text-red-600 font-bold">35.37%</td><td class="p-2 font-bold">+12.44%</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content 4 -->
+      <div id="tab4" class="tab-content hidden space-y-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <img src="visualizations/05_state_unemployment_heatmap.png" alt="State Unemployment Heatmap" class="w-full rounded-lg border border-slate-200 shadow-sm">
+            <p class="text-xs text-slate-500 mt-2 text-center">State-by-Month heatmap showcasing April-May 2020 peak across India.</p>
+          </div>
+          <div>
+            <img src="visualizations/06_zone_wise_comparison.png" alt="Zone-wise Comparison" class="w-full rounded-lg border border-slate-200 shadow-sm">
+            <p class="text-xs text-slate-500 mt-2 text-center">Macro-regional Zone trajectories: North, South, East, West, Northeast.</p>
+          </div>
+        </div>
+        <div class="mt-4">
+          <img src="visualizations/10_geospatial_bubble_map.png" alt="Geospatial Map" class="w-full max-w-3xl mx-auto rounded-lg border border-slate-200 shadow-sm">
+          <p class="text-xs text-slate-500 mt-2 text-center">Geographic Bubble Map of Peak Unemployment Severity (April 2020).</p>
+        </div>
+      </div>
+
+      <!-- Tab Content 5 -->
+      <div id="tab5" class="tab-content hidden space-y-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
+          <div>
+            <img src="visualizations/07_labour_participation_vs_unemployment.png" alt="LPR vs Unemployment" class="w-full rounded-lg border border-slate-200 shadow-sm">
+          </div>
+          <div>
+            <img src="visualizations/08_correlation_matrix.png" alt="Correlation Matrix" class="w-full rounded-lg border border-slate-200 shadow-sm">
+          </div>
+        </div>
+        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200 text-sm text-blue-900 space-y-2">
+          <h4 class="font-bold">The 'Discouraged Worker' Phenomenon:</h4>
+          <p>
+            During the lockdown, the national Labour Participation Rate (LPR) declined from <strong>43.89%</strong> to <strong>38.93%</strong>. 
+            This negative correlation (-0.16) indicates that conventional unemployment statistics understate true distress, as millions of discouraged workers temporarily stopped actively looking for work and exited the labor pool altogether.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive State Explorer -->
+    <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h2 class="text-lg font-bold text-slate-900">Interactive State Unemployment Explorer</h2>
+          <p class="text-xs text-slate-500">Filter and search state-specific impact metrics</p>
+        </div>
+        <div class="w-full sm:w-64">
+          <input type="text" id="stateSearch" placeholder="Search state..." onkeyup="filterTable()" 
+                 class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+      </div>
+
+      <div class="overflow-x-auto max-h-80 border border-slate-200 rounded-lg">
+        <table class="min-w-full text-xs text-left" id="stateTable">
+          <thead class="bg-slate-100 font-semibold text-slate-700 sticky top-0">
+            <tr>
+              <th class="p-3">State / UT</th>
+              <th class="p-3">Pre-Lockdown Avg (%)</th>
+              <th class="p-3">Lockdown Avg (%)</th>
+              <th class="p-3">Absolute Change (%)</th>
+              <th class="p-3">Relative Surge (%)</th>
+              <th class="p-3">Impact Severity</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200" id="tableBody">
+            <!-- Dynamically populated via JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Economic and Social Policy Recommendations -->
+    <section id="recommendations" class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-6">
+      <div>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">Policy Brief</span>
+        <h2 class="text-xl font-bold text-slate-900 mt-2">Strategic Policy Interventions for Economic Resilience</h2>
+        <p class="text-sm text-slate-600">Actionable recommendations derived from empirical findings to protect against future employment crises.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Policy 1 -->
+        <div class="p-5 rounded-lg border border-slate-200 bg-slate-50/50 hover:bg-slate-50 transition space-y-3">
+          <div class="w-10 h-10 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-lg">1</div>
+          <h3 class="font-bold text-slate-900 text-base">Institutionalize an Urban Employment Guarantee</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            While MGNREGA shielded rural distress during reverse migration, urban informal workers lacked institutional buffers, causing urban unemployment to reach unprecedented highs (13.17% mean). A decentralized Urban Public Works and Infrastructure Guarantee scheme is essential to cushion informal workers in metro centers.
+          </p>
+        </div>
+
+        <!-- Policy 2 -->
+        <div class="p-5 rounded-lg border border-slate-200 bg-slate-50/50 hover:bg-slate-50 transition space-y-3">
+          <div class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-lg">2</div>
+          <h3 class="font-bold text-slate-900 text-base">Portable Social Security & Digital Safety Nets</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Inter-state migrant labor suffered severe distress due to lack of localized identity documentation. Nationwide portability of subsidized food rations, emergency cash transfers (Direct Benefit Transfer), and universal health coverage must be institutionalized to avoid catastrophic migrant displacement during economic shocks.
+          </p>
+        </div>
+
+        <!-- Policy 3 -->
+        <div class="p-5 rounded-lg border border-slate-200 bg-slate-50/50 hover:bg-slate-50 transition space-y-3">
+          <div class="w-10 h-10 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-lg">3</div>
+          <h3 class="font-bold text-slate-900 text-base">State-Level Contingency Stabilization Funds</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            States such as Puducherry, Jharkhand, and Bihar suffered disproportionate unemployment spikes of over 25–44%. The central government should implement automatic counter-cyclical financial support triggers when a state's quarterly unemployment rate deviates more than 2 standard deviations above baseline.
+          </p>
+        </div>
+
+        <!-- Policy 4 -->
+        <div class="p-5 rounded-lg border border-slate-200 bg-slate-50/50 hover:bg-slate-50 transition space-y-3">
+          <div class="w-10 h-10 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-lg">4</div>
+          <h3 class="font-bold text-slate-900 text-base">Reversing Labour Force Participation Drops</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            The nationwide dip in LPR highlights the long-term danger of discouraged workers, particularly women and youth. Targeted vocational re-skilling programs in renewable energy, digital logistics, and technical trades should be tied to subsidized micro-credit loans for self-employment.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-white border-t border-slate-200 py-6 mt-12 text-center text-xs text-slate-500">
+    <p>Data Source: Kaggle Indian Unemployment Dataset (2019-2020) | Generated with Antigravity AI</p>
+  </footer>
+
+  <script>
+    // Tab switching logic
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(tabId).classList.remove('hidden');
+      document.getElementById('btn-' + tabId).classList.add('active');
+    }
+
+    // State data for interactive table
+    const stateData = [
+      { state: "Puducherry", pre: 1.59, lock: 45.84, diff: 44.24, pct: 2777.3, severity: "Critical" },
+      { state: "Jharkhand", pre: 14.28, lock: 41.65, diff: 27.37, pct: 191.7, severity: "Critical" },
+      { state: "Tamil Nadu", pre: 2.84, lock: 29.37, diff: 26.54, pct: 935.6, severity: "Critical" },
+      { state: "Bihar", pre: 13.83, lock: 36.69, diff: 22.85, pct: 165.2, severity: "Critical" },
+      { state: "Karnataka", pre: 3.23, lock: 17.53, diff: 14.30, pct: 442.1, severity: "Severe" },
+      { state: "Haryana", pre: 22.94, lock: 35.37, diff: 12.44, pct: 54.2, severity: "Severe" },
+      { state: "Andhra Pradesh", pre: 5.04, lock: 16.98, diff: 11.95, pct: 237.1, severity: "Severe" },
+      { state: "Telangana", pre: 4.66, lock: 16.22, diff: 11.56, pct: 248.4, severity: "Severe" },
+      { state: "Madhya Pradesh", pre: 4.74, lock: 15.56, diff: 10.82, pct: 228.3, severity: "Severe" },
+      { state: "Odisha", pre: 3.41, lock: 13.91, diff: 10.50, pct: 308.2, severity: "Severe" },
+      { state: "West Bengal", pre: 7.20, lock: 14.31, diff: 7.11, pct: 98.7, severity: "Moderate" },
+      { state: "Uttar Pradesh", pre: 10.65, lock: 17.47, diff: 6.82, pct: 64.0, severity: "Moderate" },
+      { state: "Maharashtra", pre: 5.62, lock: 12.37, diff: 6.75, pct: 120.1, severity: "Moderate" },
+      { state: "Delhi", pre: 14.93, lock: 21.65, diff: 6.72, pct: 45.0, severity: "Moderate" },
+      { state: "Kerala", pre: 8.65, lock: 15.34, diff: 6.69, pct: 77.3, severity: "Moderate" },
+      { state: "Punjab", pre: 10.82, lock: 16.48, diff: 5.66, pct: 52.3, severity: "Moderate" },
+      { state: "Gujarat", pre: 5.37, lock: 10.98, diff: 5.61, pct: 104.5, severity: "Moderate" },
+      { state: "Rajasthan", pre: 12.87, lock: 17.92, diff: 5.05, pct: 39.2, severity: "Moderate" },
+      { state: "Chhattisgarh", pre: 7.82, lock: 11.55, diff: 3.73, pct: 47.7, severity: "Mild" },
+      { state: "Assam", pre: 5.86, lock: 8.44, diff: 2.58, pct: 44.0, severity: "Mild" },
+      { state: "Himachal Pradesh", pre: 18.23, lock: 20.31, diff: 2.08, pct: 11.4, severity: "Mild" },
+      { state: "Uttarakhand", pre: 6.98, lock: 8.65, diff: 1.67, pct: 23.9, severity: "Mild" },
+      { state: "Meghalaya", pre: 3.82, lock: 5.12, diff: 1.30, pct: 34.0, severity: "Mild" },
+      { state: "Sikkim", pre: 7.50, lock: 8.42, diff: 0.92, pct: 12.3, severity: "Mild" }
+    ];
+
+    function renderTable(data) {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+      data.forEach(item => {
+        let badgeColor = "bg-emerald-100 text-emerald-800";
+        if (item.severity === "Critical") badgeColor = "bg-red-100 text-red-800";
+        else if (item.severity === "Severe") badgeColor = "bg-amber-100 text-amber-800";
+        else if (item.severity === "Moderate") badgeColor = "bg-blue-100 text-blue-800";
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="p-3 font-semibold text-slate-800">${item.state}</td>
+          <td class="p-3 text-slate-600">${item.pre.toFixed(2)}%</td>
+          <td class="p-3 font-bold ${item.lock > 25 ? 'text-red-600' : 'text-slate-800'}">${item.lock.toFixed(2)}%</td>
+          <td class="p-3 font-semibold text-red-600">+${item.diff.toFixed(2)}%</td>
+          <td class="p-3 text-slate-600">+${item.pct.toFixed(1)}%</td>
+          <td class="p-3"><span class="px-2 py-0.5 rounded-full text-xs font-semibold ${badgeColor}">${item.severity}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterTable() {
+      const query = document.getElementById('stateSearch').value.toLowerCase();
+      const filtered = stateData.filter(d => d.state.toLowerCase().includes(query));
+      renderTable(filtered);
+    }
+
+    // Initial render
+    renderTable(stateData);
+  </script>
+</body>
+</html>
